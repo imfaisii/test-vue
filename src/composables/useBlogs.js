@@ -44,6 +44,7 @@ export default function useBlogs() {
 
   async function deleteBlog(blog) {
     try {
+      loading.value = true;
       await axios.delete(vRoute("blogs.destroy", {blog: blog.id}));
       await index();
     } catch (e) {
