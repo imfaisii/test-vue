@@ -8,7 +8,7 @@ const {
   serverItemsLength,
   serverOptions,
   headers,
-  deleteBlog,
+  destroy,
   index: getBlogs,
 } = useBlogs();
 
@@ -46,8 +46,10 @@ watch(
         </template>
 
         <template #item-operation="item">
-          <v-icon color="blue">mdi-pencil</v-icon>
-          <v-icon color="red" @click="deleteBlog(item)">mdi-trash-can</v-icon>
+          <router-link :to="{name: 'blogs.show', params: {id: item.id}}">
+            <v-icon color="blue">mdi-pencil</v-icon>
+          </router-link>
+          <v-icon color="red" @click="destroy(item)">mdi-trash-can</v-icon>
         </template>
       </EasyDataTable>
     </v-card-text>

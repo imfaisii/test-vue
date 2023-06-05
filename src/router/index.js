@@ -29,6 +29,13 @@ const routes = [
     component: () => import("@/pages/blogs/create.vue"),
   },
   {
+    path: "/blogs/:id",
+    name: "blogs.show",
+    meta: {layout: "AppLayout", guard: "auth"},
+    component: () => import("@/pages/blogs/update.vue"),
+    props: true,
+  },
+  {
     path: "/page-not-found",
     name: "page-not-found",
     component: () => import("@/pages/errors/404.vue"),

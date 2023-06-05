@@ -1,6 +1,5 @@
 import {useLocalStorage} from "@vueuse/core";
 import Axios from "axios";
-import {watch} from "vue";
 
 const token = useLocalStorage("token");
 
@@ -12,10 +11,6 @@ const axios = Axios.create({
     Authorization: "Bearer " + token.value,
   },
   withCredentials: true,
-});
-
-watch(token, (n, o) => {
-  axios.defaults.headers.common["Authorization"] = "Bearer " + n;
 });
 
 export default axios;
