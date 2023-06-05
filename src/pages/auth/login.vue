@@ -3,8 +3,10 @@ import { reactive, ref } from "vue";
 import { isRequired, isEmail, isMin } from 'intus/rules';
 import { useUserStore } from '@/stores/user'
 import { useToast } from "vue-toastification";
+import { useRouter } from 'vue-router';
 import axios from "@/libs/axios";
 import useFormValidation from '@/composables/useForm';
+import useZiggy from '@/composables/useZiggy';
 
 const form = reactive({
     email: '',
@@ -16,18 +18,25 @@ const rules = {
 }
 
 const { validation } = useFormValidation(form, rules)
+const { vRoute } = useZiggy()
+const router = useRouter()
+const isLoading = ref(false)
 const toast = useToast();
 const userStore = useUserStore()
 
 const login = async () => {
     if (validation.value.passes()) {
         try {
-            const { data } = await axios.post('/api/login', form)
+            isLoading.value = true
+            const { data } = await axios.post(vRoute('login'), form)
 
-            userStore.setUser(data.user);
+            userStore.setUser(data.user, data.access_token);
             userStore.isloggedIn = true;
+            router.push({ name: 'dashboard' });
         } catch (e) {
             toast.error(e?.response?.data?.message ?? e?.message)
+        } finally {
+            isLoading.value = false
         }
 
     }
@@ -43,8 +52,11 @@ const login = async () => {
                 type="password"></v-text-field>
         </v-card-text>
         <v-card-actions>
-            <v-btn color="primary" @click="login">Login</v-btn>
-            <router-link :to="{ name: 'register' }">Create an account</router-link>
+            <v-btn :loading="isLoading" :disabled="isLoading" @click="login">
+                <span v-if="!isLoading">Login</span>
+                <span v-else>Loading...</span>
+            </v-btn>
+            <router-link :to="vRoute('register')">Create an account</router-link>
         </v-card-actions>
     </v-card>
 </template>

@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
+import { useLocalStorage } from "@vueuse/core";
 
 const APP_NAME = import.meta.env.VITE_APP_NAME;
 
@@ -7,14 +8,20 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        meta: { layout: 'GuestLayout' },
+        meta: { layout: 'GuestLayout', guard: 'guest' },
         component: () => import('@/pages/auth/login.vue'),
     },
     {
         path: '/register',
         name: 'register',
-        meta: { layout: 'GuestLayout' },
+        meta: { layout: 'GuestLayout', guard: 'guest' },
         component: () => import('@/pages/auth/register.vue'),
+    },
+    {
+        path: '/dashboard',
+        name: 'dashboard',
+        meta: { layout: 'AppLayout', guard: 'auth' },
+        component: () => import('@/pages/dashboard/index.vue'),
     },
     {
         path: "/page-not-found",
@@ -36,11 +43,11 @@ const router = createRouter({
 });
 
 // Navigation guard
-
 router.beforeEach((to, from, next) => {
     const store = useUserStore();
+    const token = useLocalStorage('token');
 
-    const auth = store.isLoggedIn;
+    const auth = !!(store.isLoggedIn || token.value);
 
     if (to.matched.some((route) => route.meta.guard === "guest") && auth)
         next({ name: "dashboard" });
