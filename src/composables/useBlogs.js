@@ -22,6 +22,7 @@ export default function useBlogs() {
   const headers = [
     {text: "Title", value: "title"},
     {text: "Body", value: "body"},
+    {text: "Total Likes", value: "like_counter"},
     {text: "Actions", value: "operation"},
   ];
 
@@ -95,6 +96,19 @@ export default function useBlogs() {
     try {
       loading.value = true;
       await axios.delete(vRoute("blogs.destroy", {blog: blog.id}));
+      toast.success("Blog was deleted successully.");
+      await index();
+    } catch (e) {
+      toast.error(e?.response?.data?.message ?? e?.message ?? e);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  async function like(blog) {
+    try {
+      loading.value = true;
+      await axios.get(vRoute("blogs.like", {blog: blog.id}));
       await index();
     } catch (e) {
       toast.error(e?.response?.data?.message ?? e?.message ?? e);
@@ -131,5 +145,6 @@ export default function useBlogs() {
     update,
     show,
     destroy,
+    like,
   };
 }

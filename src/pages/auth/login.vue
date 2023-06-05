@@ -1,9 +1,8 @@
 <script setup>
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
 import {isRequired, isEmail, isMin} from "intus/rules";
 import useFormValidation from "@/composables/useForm";
 import useAuth from "@/composables/useAuth";
-import useZiggy from "@/composables/useZiggy";
 
 const form = reactive({
   email: "",
@@ -16,7 +15,6 @@ const rules = {
 
 const {validation} = useFormValidation(form, rules);
 const {login: loginUser, loading} = useAuth();
-const {vRoute} = useZiggy();
 
 const login = async () => {
   if (validation.value.passes()) {
@@ -46,7 +44,7 @@ const login = async () => {
           <span v-if="!loading">Login</span>
           <span v-else>Loading...</span>
         </v-btn>
-        <router-link :to="vRoute('register')">Create an account</router-link>
+        <router-link :to="{name: 'register'}">Create an account</router-link>
       </v-card-actions>
     </v-card>
   </v-form>

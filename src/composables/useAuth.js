@@ -29,6 +29,21 @@ export default function useBlogs() {
     }
   }
 
+  async function register(form) {
+    try {
+      loading.value = true;
+      const {data} = await axios.post(vRoute("register"), form);
+
+      await userStore.setUser(data.user);
+      token.value = data.access_token;
+      router.push({name: "dashboard"});
+    } catch (e) {
+      toast.error(e?.response?.data?.message ?? e?.message ?? e);
+    } finally {
+      loading.value = false;
+    }
+  }
+
   async function logout() {
     try {
       await userStore.logout();
@@ -41,6 +56,7 @@ export default function useBlogs() {
 
   return {
     login,
+    register,
     logout,
     loading,
   };

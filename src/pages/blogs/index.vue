@@ -10,6 +10,7 @@ const {
   headers,
   destroy,
   index: getBlogs,
+  like,
 } = useBlogs();
 
 // hooks
@@ -41,6 +42,10 @@ watch(
         :items="blogs"
         buttons-pagination
       >
+        <template #item-like_counter="{like_counter}">
+          <span>{{ like_counter?.count ?? "-" }}</span>
+        </template>
+
         <template #item-body="{body}">
           <span v-html="body"></span>
         </template>
@@ -50,6 +55,9 @@ watch(
             <v-icon color="blue">mdi-pencil</v-icon>
           </router-link>
           <v-icon color="red" @click="destroy(item)">mdi-trash-can</v-icon>
+          <v-icon color="red" @click="like(item)">
+            {{ item.has_liked ? "mdi-heart" : "mdi-heart-outline" }}
+          </v-icon>
         </template>
       </EasyDataTable>
     </v-card-text>

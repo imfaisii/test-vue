@@ -9,7 +9,6 @@ import 'vue3-easy-data-table/dist/style.css';
 import "vue-toastification/dist/index.css";
 import "@/style.css";
 
-
 const app = createApp(App);
 
 app.use(
