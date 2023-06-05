@@ -5,6 +5,10 @@ const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 const routes = [
   {
+    path: "/",
+    redirect: "/login",
+  },
+  {
     path: "/login",
     name: "login",
     meta: {layout: "GuestLayout", guard: "guest"},
