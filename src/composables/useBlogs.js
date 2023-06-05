@@ -73,6 +73,7 @@ export default function useBlogs() {
 
   async function update(id, form) {
     try {
+      loading.value = true;
       const formData = transFormData(form);
       formData.append("_method", "PUT");
 

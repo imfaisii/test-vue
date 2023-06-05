@@ -25,29 +25,31 @@ const login = async () => {
 };
 </script>
 <template>
-  <v-card class="auth-card">
-    <v-card-title>Login</v-card-title>
-    <v-card-text>
-      <v-text-field
-        v-model="form.email"
-        :error-messages="validation.errors().email"
-        label="Email"
-      ></v-text-field>
-      <v-text-field
-        v-model="form.password"
-        :error-messages="validation.errors().password"
-        label="Password"
-        type="password"
-      ></v-text-field>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn :loading="loading" :disabled="loading" @click="login">
-        <span v-if="!loading">Login</span>
-        <span v-else>Loading...</span>
-      </v-btn>
-      <router-link :to="vRoute('register')">Create an account</router-link>
-    </v-card-actions>
-  </v-card>
+  <v-form @submit.prevent="login">
+    <v-card class="auth-card">
+      <v-card-title>Login</v-card-title>
+      <v-card-text>
+        <v-text-field
+          v-model="form.email"
+          :error-messages="validation.errors().email"
+          label="Email"
+        ></v-text-field>
+        <v-text-field
+          v-model="form.password"
+          :error-messages="validation.errors().password"
+          label="Password"
+          type="password"
+        ></v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn type="submit" :loading="loading" :disabled="loading">
+          <span v-if="!loading">Login</span>
+          <span v-else>Loading...</span>
+        </v-btn>
+        <router-link :to="vRoute('register')">Create an account</router-link>
+      </v-card-actions>
+    </v-card>
+  </v-form>
 </template>
 
 <style lang="scss" scoped>
