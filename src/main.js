@@ -1,11 +1,17 @@
 import { createApp, markRaw } from "vue";
 import { pinia } from "@/libs/pinia";
 import { vuetify } from "@/libs/vuetify";
-import router from "./router";
+import { ziggyJs } from './ziggy';
+import router from "@/router";
 import App from "./App.vue";
-import "./style.css";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
+import "@/style.css";
 
 const app = createApp(App);
+
+// got global routes
+app.config.globalProperties.$ziggyJs = ziggyJs;
 
 app.use(
     pinia.use(({ store }) => {
@@ -13,6 +19,7 @@ app.use(
     })
 );
 
+app.use(Toast);
 app.use(vuetify);
 app.use(router);
 app.mount("#app");

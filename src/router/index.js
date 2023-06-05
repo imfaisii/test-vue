@@ -1,14 +1,25 @@
 import { createWebHistory, createRouter } from "vue-router";
-import { useUsers } from "@/stores/user";
-import PageNotFound from "@/pages/errors/404.vue";
+import { useUserStore } from "@/stores/user";
 
 const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 const routes = [
     {
+        path: '/login',
+        name: 'login',
+        meta: { layout: 'GuestLayout' },
+        component: () => import('@/pages/auth/login.vue'),
+    },
+    {
+        path: '/register',
+        name: 'register',
+        meta: { layout: 'GuestLayout' },
+        component: () => import('@/pages/auth/register.vue'),
+    },
+    {
         path: "/page-not-found",
         name: "page-not-found",
-        component: PageNotFound,
+        component: () => import('@/pages/errors/404.vue'),
         meta: {
             title: "Page Not Found",
         },
@@ -27,9 +38,9 @@ const router = createRouter({
 // Navigation guard
 
 router.beforeEach((to, from, next) => {
-    const store = useUsers();
+    const store = useUserStore();
 
-    const auth = store.authUser;
+    const auth = store.isLoggedIn;
 
     if (to.matched.some((route) => route.meta.guard === "guest") && auth)
         next({ name: "dashboard" });
