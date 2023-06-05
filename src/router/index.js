@@ -1,7 +1,6 @@
 import {createWebHistory, createRouter} from "vue-router";
 import {useUserStore} from "@/stores/user";
-import { useLocalStorage } from "@vueuse/core";
-
+import {useLocalStorage} from "@vueuse/core";
 const APP_NAME = import.meta.env.VITE_APP_NAME;
 
 const routes = [
@@ -52,8 +51,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const store = useUserStore();
   const token = useLocalStorage("token");
-
-  const auth = !!(store.isLoggedIn || token.value !== "undefined");
+  const auth = store.isLoggedIn || (token.value && token.value !== "undefined");
 
   if (to.matched.some((route) => route.meta.guard === "guest") && auth)
     next({name: "dashboard"});
