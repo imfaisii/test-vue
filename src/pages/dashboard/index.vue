@@ -1,3 +1,7 @@
+<script setup>
+import BlogsIndex from "@/pages/blogs/index.vue";
+</script>
+
 <template>
-    Dashboard
+  <blogs-index></blogs-index>
 </template>

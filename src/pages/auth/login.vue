@@ -34,7 +34,7 @@ const login = async () => {
             userStore.isloggedIn = true;
             router.push({ name: 'dashboard' });
         } catch (e) {
-            toast.error(e?.response?.data?.message ?? e?.message)
+            toast.error(e?.response?.data?.message ?? e?.message ?? e)
         } finally {
             isLoading.value = false
         }
